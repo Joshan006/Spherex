@@ -1,79 +1,69 @@
-# SPHEREx Megaconstellation Contamination — Real-Orbital-Data Analysis
+# SPHEREx Megaconstellation Contamination: Real-Orbital-Data Analysis
 
-Code, figures and documents for a from-scratch study of how often satellites from
-megaconstellations cross the field of view of NASA's SPHEREx infrared survey telescope,
-and what those crossings look like photometrically. It extends the undergraduate project
-*"Investigation on Celestial Events and Megaconstellation Effects on Telescopes"*
-(SRM Institute of Science and Technology, 2026, supervised by Dr. Tushar H. Rana).
+Code, figures and documents for a from-scratch study of how often megaconstellation satellites
+cross the field of view of NASA's SPHEREx infrared survey telescope, and what those crossings
+look like. It extends the undergraduate project *"Investigation on Celestial Events and
+Megaconstellation Effects on Telescopes"* (SRM Institute of Science and Technology, 2026,
+supervised by Dr. Tushar H. Rana).
 
 Author: Joshanraj C V
 
-## Main results (revised September 2026)
+## Main results (final revision, September 2026)
 
 | Quantity | Result |
 |---|---|
-| Satellites that can cross SPHEREx's field | Only those orbiting **above** ~650 km (35° zenith limit). Starlink, Amazon Leo and Guowang GW-A59: 0 crossings in ~3.2 M simulated exposures |
-| Full build-out, filed constellations above 650 km (~28,500 sats) | **4.5 ± 0.2 trails per exposure** |
-| Borlaff et al. (2025, *Nature*), ~560,000 sats | 5.64 (+0.28/−0.27) |
-| Real-orbit validation (real OneWeb orbit, 1 year) | real / model = 1.24 ± 0.42 → band 3.7–7.4, contains the published value |
-| Today's population | ~0.13 trails per exposure (about 1 exposure in 8), from OneWeb and early Qianfan |
-| Observable crossings | median range 635 km, ~1.2°/s across the field, ~3 s to cross the short axis |
-| Thermal vs reflected light | Thermal emission (T_eq = 316 K) dominates above 3.76 μm |
-| TLE error budget (1 / 3 / 7-day-old TLEs) | 0.67% / 1.56% / 3.34% range; 0.014 / 0.034 / 0.073 mag |
+| Which satellites can cross SPHEREx's field | Only those orbiting **above** ~650 km (35° zenith limit). Starlink, Amazon Leo and Guowang GW-A59: 0 crossings in ~4.8 M simulated exposures |
+| Full build-out of filed constellations above 650 km (~28,500 sats) | **5.9 ± 0.1 trails per exposure** (year-averaged) |
+| Borlaff et al. (2025, *Nature*) | 5.64 (+0.28/−0.27) |
+| Main systematic | Qianfan: 3.1 of the 5.9. With only its 1,296-satellite near-term phase the total is ~3.1 |
+| Real-orbit validation (real OneWeb orbit, 12 windows over a year) | real / model = 1.01 (68% interval 0.62–1.37): model validated to ~±35% |
+| Today (OneWeb 654, Guowang 186, Qianfan ~248 in orbit) | ~0.24 trails per exposure (about 1 exposure in 4) |
+| Observable crossings | median range 640 km, ~1.2°/s, a median 3.4 s inside the field |
+| Thermal vs reflected light | Thermal dominates beyond 3.4–4.1 μm, depending on surface model |
+| TLE error budget (1 / 3 / 7-day-old TLEs) | 0.66% / 1.55% / 3.32% range; 0.014 / 0.034 / 0.072 mag |
 
-The remaining difference from Borlaff et al. corresponds to ~7,500 additional satellites
-above 650 km in their constellation registry, which could not be read as data here.
+## How the result evolved (and why earlier numbers are withdrawn)
 
-## What changed from the first version
+`figures/fig7_investigation.png` and §7.2 of the manuscript trace every stage.
 
-The first version pointed a fixed boresight at the North Ecliptic Pole with no survey
-constraints. It predicted 64.9 trails/exposure at full build-out (11.5× the literature) and
-~2.3 trails/exposure today. Both figures are **withdrawn**: at all 36 real crossings behind the
-2.3 figure the target was 101–164° from SPHEREx's zenith, a direction SPHEREx never points.
-The fix, step by step, is in `figures/fig7_investigation.png` and §7.2 of the manuscript:
+1. **First version** (fixed North Ecliptic Pole pointing, no survey constraints): 64.9 trails/exposure
+   at build-out and ~2.3 today. Withdrawn: SPHEREx never points where those crossings happened.
+2. **Survey constraints applied** (35° zenith, 91° Sun), altitudes corrected, time step converged: 4.5.
+3. **Independent code review** found the field roll was effectively fixed (not random, as the text
+   claimed), the model used a single date, and the old convergence script never changed its time step.
+   Fixed in the final pipeline: **5.9**.
 
-1. Apply SPHEREx's real survey rules (35° max zenith angle, 91° solar avoidance) with random accessible pointings.
-2. Correct Guowang GW-2 (~1,145 km) and Qianfan (~1,160 km) altitudes; drop proportional scaling to 560,000.
-3. Converge the time step (0.1 s); coarse steps missed fast near-overhead crossings by up to ~40%.
-
-## Scripts (`scripts/`)
+## Final pipeline (`scripts/`)
 
 | Script | What it does |
 |---|---|
-| `01_full_window_propagation.py` | SGP4 propagation of real SPHEREx + real OneWeb over one 112.5 s exposure |
-| `02_monte_carlo_idealized_shells.py` | First statistical model (fixed NEP pointing, unconstrained) — superseded |
-| `03_monte_carlo_eclipse_brightness_filters.py` | Adds eclipse and brightness cuts (no effect) — superseded |
-| `04_real_catalog_validation_starlink.py` | 6 real Starlink satellites, 30 days, fixed NEP geometry |
-| `05_real_catalog_validation_oneweb.py` | 1 real OneWeb satellite, 30 days, fixed NEP geometry |
-| `06_real_events_and_blackbody_photometry.py` | Thermal vs reflected photometry on the fixed-NEP events |
-| `07_tle_uncertainty_error_budget.py` | TLE error budget on the fixed-NEP events — superseded by 12 |
-| `08_zenith_constraint_test.py` | First test of the 35° zenith constraint |
-| `09_random_accessible_pointing.py` | Adds 91° Sun avoidance and random accessible pointings |
-| **`10_altitude_resolved_final_model.py`** | **Final model**: sourced shells, above/below-orbit test, 0.1 s crossing detection. Usage: `python3 scripts/10_altitude_resolved_final_model.py <seed>` (seeds 11, 12 used) |
-| `10a_timestep_convergence.py` | Time-step convergence on identical random draws |
-| `10b_coarse_fine_vs_bruteforce.py` | Checks the coarse+fine scheme against brute-force 0.1 s (57/57 hits) |
-| `10c_telesat_shells.py` | Telesat Lightspeed shells |
-| **`11_real_oneweb_survey_geometry.py`** | **Real-orbit validation**: real OneWeb vs real SPHEREx, 12 × 30-day windows over a year, real survey constraints |
-| **`12_observable_events_photometry_errors.py`** | 962 observable crossings: range, angular rate, thermal crossover, TLE error budget |
+| `spherex_geometry.py` | Shared geometry: SPHEREx orbit, Sun ephemeris, pointing sampler (35°/91°, random roll), field test, coarse+fine detection |
+| `01_full_window_propagation.py` | Real SPHEREx + real OneWeb over one 112.5 s exposure |
+| `13_final_model_year_averaged.py <seed>` | Final model: 12 dates, 6 above-orbit shells + 4 below-orbit controls (seeds 21, 22 used; ~15 min each) |
+| `14_convergence_test.py` | Brute-force time-step convergence on identical draws, and check of the coarse+fine scheme |
+| `15_real_oneweb_validation.py` | Real OneWeb vs real SPHEREx, 12 × 30-day windows, compared with the model on the same dates (run after 13) |
+| `16_observable_events_photometry.py` | Crossing properties, thermal-vs-reflected crossover (3 surface models), TLE error budget |
+| `17_summarise_results.py` | Pools seeds; build-out total, today's rate, Qianfan sensitivity → `results/final_results.json` |
 
-Run everything from the repository root. Intermediate files are written to `results/`.
-Scripts 10 and 11 take several minutes each.
+Run from the repository root, in the order 13 (both seeds) → 17 → 15 → 16, then the scripts in
+`figures/`. Earlier stages are in `scripts/superseded/` (see its README); do not use their numbers.
 
 ## Documents
 
-- `SPHEREx_combined_manuscript.docx` — original thesis background and reflectance model (§1–5) plus the extension (§6–9).
-- `SPHEREx_extension_report.docx` — the extension on its own, with a scope note and a list of changes in this revision.
-- Rebuild both with `node report_generation/build_documents.js` (needs `npm install docx`).
+- `SPHEREx_combined_manuscript.docx`: thesis background and reflectance model (§1–5) plus the extension (§6–9).
+- `SPHEREx_extension_report.docx`: the extension alone, with a scope note and a list of changes.
+- Rebuild with `node report_generation/build_documents.js` (needs `npm install docx`).
 
 ## Data and references
 
-- TLEs: public NORAD catalogue via Celestrak (SPHEREx 63182; Starlink 48294, 48375, 48646, 47650, 47796, 44768; OneWeb 55158).
-- Borlaff, Marcum & Howell (2025), *Satellite megaconstellations will threaten space-based astronomy*, Nature, doi:10.1038/s41586-025-09759-5 (Author Correction 2026 affects ARRAKIHS only).
-- Constellation altitudes: public filings as reported by CircleID and Wikipedia (Guowang, Qianfan), OneWeb and Telesat design data.
+- TLEs: public NORAD catalogue (Celestrak, via KeepTrack), retrieved September 2026; all checksums valid.
+- Borlaff, Marcum & Howell (2025), *Nature*, doi:10.1038/s41586-025-09759-5 (Author Correction 2026 affects ARRAKIHS only).
+- SPHEREx instrument: Crill et al. (2024), arXiv:2404.11017.
+- Constellation altitudes and counts: public filings as reported by CircleID, Wikipedia, KeepTrack and Orbital Radar.
 
 ## Limitations
 
-Idealised random circular shells rather than real Walker plane structure; real-orbit
-validation uses a single OneWeb satellite; random rather than scheduled pointings and roll;
-low-precision Sun ephemeris; flat-plate thermal model and Lambertian reflection without a
-phase function. See §8 of the manuscript.
+Idealised random circular shells rather than real Walker plane structure; the real-orbit check
+uses a single OneWeb satellite (±35%); random pointings and roll instead of SPHEREx's real survey
+sequence; approximate Guowang/Qianfan inclinations; simple surface models for photometry.
+See §8 of the manuscript.

@@ -1,20 +1,21 @@
-"""Figure 7.4: thermal vs reflected flux for a representative OBSERVABLE crossing
-(OneWeb, D=3.91 m, albedo 0.25, median observable range 635 km). Same physics as part_c."""
+"""Figure: thermal vs reflected flux across SPHEREx's range for a OneWeb-size satellite at the
+median observable range (640 km), for the three surface models of script 16."""
 import numpy as np, matplotlib; matplotlib.use('Agg'); import matplotlib.pyplot as plt
-h,c,kB=6.62607015e-34,2.99792458e8,1.380649e-23
-def B(wl,T): wl=wl*1e-6; return 2*h*c**2/(wl**5*(np.exp(h*c/(wl*kB*T))-1))
-bands=np.concatenate([np.linspace(0.75,2.44,51),np.linspace(2.40,5.01,51)])
-alb,D,d=0.25,3.91,635e3; T=(1361*(1-alb)/(2*0.9*5.670374419e-8))**0.25; g=np.pi*(D/2/d)**2*1e-6
-th=B(bands,T)*g; rf=alb*B(bands,5778)*(695700e3/1.495978707e11)**2*g
-x=bands[np.argmin(np.abs(np.log(th/rf)))]
-plt.rcParams.update({'font.size':9,'axes.spines.top':False,'axes.spines.right':False,'axes.edgecolor':'#8a8984','xtick.color':'#52514e','ytick.color':'#52514e'})
-fig,ax=plt.subplots(figsize=(6.5,4.3))
-ax.axvspan(0.75,2.44,color='#e6e5e0',alpha=0.5,lw=0); ax.axvspan(2.40,5.01,color='#d9d8d2',alpha=0.5,lw=0)
-ax.plot(bands,th,color='#eb6834',lw=2,label=f'Thermal emission (T = {T:.0f} K)'); ax.plot(bands,rf,color='#2a78d6',lw=2,label='Reflected sunlight')
-ax.axvline(x,color='#52514e',ls='--',lw=1); ax.text(x+0.05,th.max()*3,f'crossover {x:.2f} μm',fontsize=8,color='#0b0b0b')
-ax.text(1.6,th.min()*3,'short-wave detector',ha='center',fontsize=8,color='#52514e'); ax.text(3.7,th.min()*3,'long-wave detector',ha='center',fontsize=8,color='#52514e')
-ax.set_yscale('log'); ax.set_xlabel('Wavelength (μm)'); ax.set_ylabel('Flux density at SPHEREx (W m$^{-2}$ μm$^{-1}$)')
-ax.set_title('OneWeb satellite at 635 km (median observable range)',fontsize=9,loc='left')
-ax.legend(fontsize=8,frameon=False,loc='center right'); ax.grid(color='#e6e5e0',lw=0.6,which='major'); ax.set_axisbelow(True)
-fig.tight_layout(); fig.savefig('figures/fig3_blackbody_spectrum.png',dpi=200,facecolor='#fcfcfb')
-print(f"crossover {x:.2f} um")
+h, c, kB, sig = 6.62607015e-34, 2.99792458e8, 1.380649e-23, 5.670374419e-8
+S, ALB, EPS, D, d, PH = 1361.0, 0.25, 0.9, 3.91, 640e3, 80.0
+wl = np.linspace(0.75, 5.01, 2000)
+def B(w, T): w = w * 1e-6; return 2 * h * c ** 2 / (w ** 5 * (np.exp(h * c / (w * kB * T)) - 1))
+g = (D / 2 / d) ** 2 * 1e-6; Bs = B(wl, 5778) * (695700e3 / 1.495978707e11) ** 2
+Tp = (S * (1 - ALB) / (2 * EPS * sig)) ** 0.25; Ti = (S * (1 - ALB) / (4 * EPS * sig)) ** 0.25
+a = np.radians(PH); lam = (np.sin(a) + (np.pi - a) * np.cos(a)) / np.pi
+plt.rcParams.update({'font.size': 9, 'axes.spines.top': False, 'axes.spines.right': False, 'axes.edgecolor': '#8a8984', 'xtick.color': '#52514e', 'ytick.color': '#52514e'})
+fig, ax = plt.subplots(figsize=(6.5, 4.3))
+ax.axvspan(3.39, 4.12, color='#e6e5e0', lw=0); ax.text(3.75, 3e-9, 'crossover\n3.4–4.1 μm', ha='center', fontsize=8, color='#0b0b0b')
+ax.plot(wl, EPS * B(wl, Tp) * np.pi * g, color='#eb6834', lw=2, label=f'Thermal, flat plate ({Tp:.0f} K)')
+ax.plot(wl, EPS * B(wl, Ti) * np.pi * g, color='#eb6834', lw=1.5, ls='--', label=f'Thermal, isothermal sphere ({Ti:.0f} K)')
+ax.plot(wl, ALB * Bs * np.pi * g, color='#2a78d6', lw=2, label='Reflected, flat plate face-on')
+ax.plot(wl, ALB * Bs * np.pi * g * (2 / 3) * lam, color='#2a78d6', lw=1.5, ls='--', label=f'Reflected, Lambert sphere ({PH:.0f}° phase)')
+ax.set_yscale('log'); ax.set_ylim(1e-16, 1e-8); ax.set_xlabel('Wavelength (μm)'); ax.set_ylabel('Flux density at SPHEREx (W m$^{-2}$ μm$^{-1}$)')
+ax.set_title('OneWeb-size satellite at 640 km (median observable range)', fontsize=9, loc='left')
+ax.legend(fontsize=7.5, frameon=False, loc='lower left'); ax.grid(color='#e6e5e0', lw=0.6); ax.set_axisbelow(True)
+fig.tight_layout(); fig.savefig('figures/fig3_blackbody_spectrum.png', dpi=200, facecolor='#fcfcfb')
