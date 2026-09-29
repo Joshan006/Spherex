@@ -14,7 +14,7 @@ import pickle
 
 rng = np.random.default_rng(123)
 
-with open('/home/claude/spherex/real_events_with_photometry.pkl','rb') as f:
+with open('results/real_events_with_photometry.pkl','rb') as f:
     data = pickle.load(f)
 events = data['events']
 
@@ -71,5 +71,5 @@ print(f"Median resulting magnitude (photometric) uncertainty: {np.median(sigma_m
 print(f"(Sigma inputs: satellites ~{SIGMA_EPOCH_KM}+{SIGMA_GROWTH_KM_PER_DAY}*age_days km, "
       f"SPHEREx ~{SIGMA_EPOCH_KM}+{SIGMA_GROWTH_KM_PER_DAY}*{spherex_age_days} km)")
 
-with open('/home/claude/spherex/final_events.pkl','wb') as f:
+with open('results/final_events.pkl','wb') as f:
     pickle.dump(events, f)

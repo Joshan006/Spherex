@@ -156,7 +156,7 @@ for e in enc_full:
           f"range {e['ranges'].min():.0f}-{e['ranges'].max():.0f} km")
 
 import pickle
-with open('/home/claude/spherex/part_b_results.pkl', 'wb') as f:
+with open('results/part_b_results.pkl', 'wb') as f:
     pickle.dump(dict(enc_current=enc_current, rate_current=rate_current,
                       enc_full=enc_full, rate_full=rate_full,
                       pop_current=pop_current, pop_fullbuildout=pop_fullbuildout,

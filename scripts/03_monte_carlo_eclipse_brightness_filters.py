@@ -196,7 +196,7 @@ for e in enc_f:
     print(f"  {e['shell']}: sunlit_frac={e['frac_sunlit']:.2f}, bright_enough_frac={e['frac_bright_enough']:.3f}, "
           f"trail_rate={e['trail_rate']:.3f}, n_detected={len(e['ranges'])}")
 
-with open('/home/claude/spherex/part_b2_results.pkl', 'wb') as f:
+with open('results/part_b2_results.pkl', 'wb') as f:
     pickle.dump(dict(enc_current=enc_c, rate_current=rate_c, enc_full=enc_f, rate_full=rate_f,
                       pop_current=pop_current, pop_fullbuildout=pop_fullbuildout, shells=shells,
                       MU_THRESH=MU_THRESH), f)

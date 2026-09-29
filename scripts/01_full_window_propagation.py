@@ -88,7 +88,7 @@ print(f"FOV encounter (within +-1.75 deg cross-scan, +-5.5 deg long-scan of bore
 in_fov = phase_angle_deg < 5.5  # crude: within half the long axis of a single boresight pointing
 print(f"  Min phase angle: {phase_angle_deg.min():.2f} deg -> {'POSSIBLE ENCOUNTER' if in_fov.any() else 'OFF-FRAME (this specific pair/epoch)'}")
 
-np.savez('/home/claude/spherex/part_a_results.npz',
+np.savez('results/part_a_results.npz',
          times_offset=np.arange(n_steps)*DT, range_km=range_km,
          phase_angle_deg=phase_angle_deg, omega_arcsec_s=omega_arcsec_s,
          spherex_r=spherex_r, oneweb_r=oneweb_r)

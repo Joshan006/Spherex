@@ -101,7 +101,7 @@ print(f"Total REAL crossing events extracted: {len(all_events)}")
 for e in all_events:
     print(f"  {e['source']}: range={e['range_km']:.0f} km, omega={e['omega_arcsec_s']:.1f} arcsec/s")
 
-with open('/home/claude/spherex/real_events.pkl','wb') as f:
+with open('results/real_events.pkl','wb') as f:
     pickle.dump(all_events, f)
 
 # =========================================================================
@@ -154,5 +154,5 @@ for e in all_events:
           f"thermal/reflected ratio at 0.75um={ratio_at_1um:.2e}, at 5.0um={ratio_at_5um:.2e}, "
           f"crossover~{e['crossover_um']:.2f} um")
 
-with open('/home/claude/spherex/real_events_with_photometry.pkl','wb') as f:
+with open('results/real_events_with_photometry.pkl','wb') as f:
     pickle.dump(dict(events=all_events, bands_um=all_bands_um), f)
