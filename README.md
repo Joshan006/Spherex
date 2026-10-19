@@ -8,8 +8,6 @@ supervised by Dr. Tushar H. Rana).
 
 Author: Joshanraj C V
 
-**AI assistance:** the code, figures and report text in this repository were developed with substantial help from an AI coding assistant (Anthropic's Claude), under the author's direction. The author is responsible for the content and is working through every script to reproduce and understand the results.
-
 ## Main results (final revision, September 2026)
 
 | Quantity | Result |
