@@ -1,6 +1,6 @@
 """
 Pool the two seeds of script 13, compute the full-build-out total with statistical error,
-today's rate with 2026 in-orbit counts, and the main systematic sensitivities.
+the rate with in-orbit counts as of September 2026, and the main systematic sensitivities.
 Writes results/final_results.json
 """
 import json, glob, numpy as np
@@ -23,7 +23,7 @@ for r in rows: print(f"{r['name']:24s} {r['alt']:5d} km {r['inc']:5.1f} deg  p={
 print(f"below-orbit controls: {below}")
 print(f"TOTAL full build-out: {tot:.2f} +/- {np.sqrt(var):.2f} (stat.)   seeds: {[round(s,2) for s in seeds]}")
 print(f"  if Qianfan reaches only its 1,296-satellite near-term phase: {tot_q1296:.2f}")
-print(f"TODAY (2026 counts): {cur:.3f} trails/exposure  (~1 exposure in {1/cur:.0f})")
+print(f"AS OF SEP 2026 (in-orbit counts): {cur:.3f} trails/exposure  (~1 exposure in {1/cur:.0f})")
 print(f"Borlaff et al. (2025): 5.64 (+0.28/-0.27); ratio {tot/5.64:.2f}")
 json.dump(dict(rows=rows, below=below, total=tot, total_stat_err=float(np.sqrt(var)), seed_totals=seeds,
-               total_if_qianfan_1296=tot_q1296, today=cur, today_counts=NOW), open("results/final_results.json", "w"), indent=1)
+               total_if_qianfan_1296=tot_q1296, rate_sep2026=cur, counts_sep2026=NOW), open("results/final_results.json", "w"), indent=1)
