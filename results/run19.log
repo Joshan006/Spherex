@@ -1,0 +1,40 @@
+Population above 650 km: 18613-18729 objects; 10 (seed, date) sets; 11281 recorded crossings
+Geometric rate (every object, no brightness cut): 5.26 +/- 0.04 trails/exposure
+Detectable rate (mu < 24.69): 2.09 +/- 0.02 trails/exposure   [measured, Borlaff et al. 2026: 2.18 +0.11/-0.09]
+  by date: {'2025-05-15': 2.11, '2025-06-15': 2.13, '2025-07-15': 2.06, '2025-08-15': 2.06, '2025-09-15': 2.11}
+
+By object type (geometric -> detectable):
+  PAY : 1.94 -> 1.32
+  R/B : 0.93 -> 0.61
+  DEB : 2.39 -> 0.16
+
+By orbit regime (detectable):
+  LEO (perigee < 2,000 km)    : geometric 2.97, detectable 1.10
+  MEO / high-eccentricity     : geometric 1.08, detectable 0.47
+  GEO and beyond              : geometric 1.21, detectable 0.53
+
+Largest detectable contributors (by name prefix):
+0
+COSMOS      0.380
+SL          0.208
+ONEWEB      0.146
+BREEZE      0.089
+ARIANE      0.088
+DELTA       0.054
+ATLAS       0.049
+CZ          0.046
+INTELSAT    0.039
+FREGAT      0.038
+
+Sensitivity of the detectable rate:
+  mu_lim 23.69, albedo nominal: 1.39
+  mu_lim 23.69, albedo 0.1    : 0.93
+  mu_lim 23.69, albedo 0.3    : 1.77
+  mu_lim 24.69, albedo nominal: 2.09
+  mu_lim 24.69, albedo 0.1    : 1.64
+  mu_lim 24.69, albedo 0.3    : 2.54
+  mu_lim 25.69, albedo nominal: 2.93
+  mu_lim 25.69, albedo 0.1    : 2.40
+  mu_lim 25.69, albedo 0.3    : 3.38
+
+Detected trails: median surface brightness 23.2 mag/arcsec^2, median range 18684 km, median angular rate 0.03 deg/s
