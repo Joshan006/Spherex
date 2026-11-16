@@ -28,6 +28,14 @@ systematic uncertainty is large (detection limit ±1 mag and albedo 0.1–0.3 gi
 is consistency within roughly a factor of 1.5, not a precise match. See `figures/fig8_full_catalogue_vs_measured.png`
 and §7.10 of the project report.
 
+## Audit (16 November 2026)
+
+The result was re-tested from a fresh clone: exact reproduction of the published seed, two new
+seeds through the unchanged scripts (2.05 ± 0.03), an independent re-implementation at 100 M
+simulated exposures (2.09 ± 0.02), and a per-exposure distribution compared with the published
+SPHEREx counts (model: 77% of exposures with at least one trail, median 1; measured: 73%, median 1).
+See `audit/README.md`.
+
 ## How the result evolved (and which numbers are withdrawn)
 
 `figures/fig7_investigation.png` and §7.2 of the project report trace the early stages.
@@ -80,4 +88,6 @@ Run from the repository root. Earlier stages are in `scripts/superseded/` (see i
 Simple brightness model (radar cross-section as optical size, one albedo per object type, reflected
 sunlight only, no thermal emission or Earthshine); random orbital orientations for catalogued objects;
 untracked small debris absent; random pointings and roll instead of SPHEREx's real survey sequence.
+The 2.5 s coarse time step in scripts 13 and 18 skips about 0.4% of crossings (objects closer than
+~150 km moving faster than ~5°/s); this is below the statistical error and is left uncorrected.
 See §8 of the project report.

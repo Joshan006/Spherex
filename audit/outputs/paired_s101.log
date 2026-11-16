@@ -1,0 +1,11 @@
+   PAIRED: total 1136; found by repo coarse pass 1132; missed by repo coarse pass 4; missed by rigorous prefilter 0
+2025-05-15: 18613 objects above 650 km; 1136 crossings / 4000000 valid exposures -> 5.29 trails per exposure (geometric, no brightness cut)
+   PAIRED: total 1100; found by repo coarse pass 1097; missed by repo coarse pass 3; missed by rigorous prefilter 0
+2025-06-15: 18620 objects above 650 km; 1100 crossings / 4000000 valid exposures -> 5.12 trails per exposure (geometric, no brightness cut)
+   PAIRED: total 1130; found by repo coarse pass 1129; missed by repo coarse pass 1; missed by rigorous prefilter 0
+2025-07-15: 18631 objects above 650 km; 1130 crossings / 4000000 valid exposures -> 5.26 trails per exposure (geometric, no brightness cut)
+   PAIRED: total 1183; found by repo coarse pass 1177; missed by repo coarse pass 6; missed by rigorous prefilter 0
+2025-08-15: 18675 objects above 650 km; 1183 crossings / 4000000 valid exposures -> 5.52 trails per exposure (geometric, no brightness cut)
+   PAIRED: total 1109; found by repo coarse pass 1102; missed by repo coarse pass 7; missed by rigorous prefilter 0
+2025-09-15: 18729 objects above 650 km; 1109 crossings / 4000000 valid exposures -> 5.19 trails per exposure (geometric, no brightness cut)
+finished
